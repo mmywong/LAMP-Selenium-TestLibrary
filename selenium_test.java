@@ -13,7 +13,8 @@ import org.openqa.selenium.WebElement;
 public class selenium_test {
  
         public static void main(String[] args) throws IOException, InterruptedException {
-                System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+                
+		System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.addArguments("--headless");
                 chromeOptions.addArguments("--no-sandbox");
@@ -25,8 +26,9 @@ public class selenium_test {
                 Thread.sleep(1000);
 		
 		login(driver);
+		uploadfile(driver);
 		screenshot(driver);
-
+		
                 driver.quit();
         }
 
@@ -47,16 +49,27 @@ public class selenium_test {
 	}
 
 	public static void screenshot(WebDriver driver) {
-	
-		System.out.println("testing screenshot");
+		
 		File src = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 		try{
 			FileUtils.copyFile(src, new File("screenshot.png"));
-
+			System.out.println("screenshot captured");
 		}
 		catch (Exception e){
 			System.out.println(e.getMessage());
 		}
 
+	}
+
+	public static void uploadfile(WebDriver driver){
+		
+		System.out.println("testing upload...");
+		
+		//upload image
+		WebElement uploadElement = driver.findElement(By.id("fileToUpload"));
+		uploadElement.sendKeys("/home/mirynth/Downloads/818292.png");
+
+		//click "Upload Image" button
+		driver.findElement(By.name("submit_button")).click();
 	}
 }
