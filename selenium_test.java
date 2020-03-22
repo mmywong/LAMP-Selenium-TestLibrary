@@ -1,5 +1,8 @@
 import java.io.IOException;
- 
+import java.io.File;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -21,17 +24,39 @@ public class selenium_test {
  
                 Thread.sleep(1000);
 		
+		login(driver);
+		screenshot(driver);
+
+                driver.quit();
+        }
+
+	public static void login(WebDriver driver) {
+
 		WebElement searchbar = driver.findElement(By.id("username"));
-		searchbar.sendKeys("michelle");
-		driver.findElement(By.cssSelector("input[type='submit']")).click();
-		
-		System.out.println("testing searchbar");
+                searchbar.sendKeys("michelle");
+                driver.findElement(By.cssSelector("input[type='submit']")).click();
+
+                System.out.println("testing searchbar");
 
                 if (driver.getPageSource().contains("Logout")) {
                         System.out.println("Pass");
                 } else {
                         System.out.println("Fail");
                 }
-                driver.quit();
-        }
+ 
+	}
+
+	public static void screenshot(WebDriver driver) {
+	
+		System.out.println("testing screenshot");
+		File src = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		try{
+			FileUtils.copyFile(src, new File("screenshot.png"));
+
+		}
+		catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+
+	}
 }
